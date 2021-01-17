@@ -1,43 +1,25 @@
-import mysql, { Connection, Query } from 'mysql';
+import mongoose, { Mongoose } from "mongoose";
+import Logger, { LogLevel } from "../misc/Logger";
+
+const writeLine = Logger.generateLogger("DatabaseManager");
 
 export default class DatabaseManager {
-    connection: Connection;
+    private client?: Mongoose;
 
-    constructor(host: string, port: number, user: string, password: string, database: string) {
-        this.connection = mysql.createConnection({
-            host,
-            user,
-            password,
-            database,
-            port
-        });
-    }
+    constructor(private mongoUri: string) { }
 
-    initialize = (): Promise<void> => {
+    initialize(): Promise<void> {
         return new Promise((resolve, reject) => {
-            this.connection.connect(err => {
-                if (err) {
-                    reject(new Error('error connecting to mysql server: ' + err.message));
-                    return;
-                }
+            mongoose.connect(this.mongoUri, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true
+            }).then(mong => {
+                this.client = mong;
+                writeLine("Connected to database.", LogLevel.Verbose);
                 resolve();
+            }).catch(err => {
+                reject(err);
             });
         });
-    }
-
-    doQuery = (query: string, params: string[]): Promise<any> => {
-        return new Promise<any>((resolve, reject) => {
-            this.connection.query(query, params, (error, results, fields) => {
-                if (error)
-                    reject(error);
-                resolve(results);
-            });
-        });
-    }
-
-    dispose = () => {
-        if (this.connection != null) {
-            this.connection.end();
-        }
     }
 }
