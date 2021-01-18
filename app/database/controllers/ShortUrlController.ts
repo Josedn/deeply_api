@@ -1,11 +1,26 @@
-import { ShortUrlDao } from "../models/ShortUrl";
+import ShortUrl, { IShortUrl } from "../models/ShortUrl";
 
 export default class ShortUrlController {
-    static create(slug: string, source: string) {
-
+    static async create(slug: string, source: string): Promise<IShortUrl> {
+        try {
+            const data = await ShortUrl.create({
+                slug,
+                source,
+            });
+            return data;
+        } catch (error) {
+            throw error;
+        }
     }
 
-    static retrieve() {
-
+    static async retrieve(slug: string): Promise<IShortUrl[]> {
+        try {
+            const data = await ShortUrl.find({
+                slug,
+            });
+            return data;
+        } catch (error) {
+            throw error;
+        }
     }
 }

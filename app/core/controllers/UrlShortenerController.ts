@@ -1,5 +1,7 @@
 import Logger, { LogLevel } from "../../misc/Logger";
 import { Request, Response, NextFunction } from "express";
+import { getRandomToken } from "../../misc/Utils";
+import ShortUrlController from "../../database/controllers/ShortUrlController";
 
 const writeLine = Logger.generateLogger("UrlShortenerController");
 const writeLineWithRequest = (line: String, req: Request) => {
@@ -10,16 +12,34 @@ const writeLineWithRequest = (line: String, req: Request) => {
 };
 
 export default class UrlShortenerController {
-    static create(req: Request, res: Response, next: NextFunction): void {
-        const { token } = req.headers;
-        const { url } = req.body;
-        writeLineWithRequest("Requested index", req);
-        res.json({});
+    static async create(req: Request, res: Response, next: NextFunction) {
+        writeLineWithRequest("Requested create", req);
+        //const { token } = req.headers;
+        const { source } = req.body;
+
+        if (source == null || source.length < 0) {
+            res.status(400).json({});
+            return;
+        }
+
+        const slug = getRandomToken();
+        const response = await ShortUrlController.create(slug, source);
+        console.log(response);
+        res.json(response);
     }
 
-    static retrieve(req: Request, res: Response, next: NextFunction): void {
-        writeLineWithRequest("Requested index", req);
-        res.json({});
+    static async retrieve(req: Request, res: Response, next: NextFunction) {
+        writeLineWithRequest("Requested retrieve", req);
+        const { slug } = req.query as any;
+
+        if (slug == null || slug.length < 0) {
+            res.status(400).json({});
+            return;
+        }
+
+        const response = await ShortUrlController.retrieve(slug);
+        console.log(response);
+        res.json(response);
     }
 }
 
