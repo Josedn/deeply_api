@@ -32,10 +32,6 @@ export default class ApiEnvironment {
     }
 
     private static printSplash() {
-        //console.log("|         |    |          o     ");
-        //console.log("|---.,---.|---.|---.,---. .,---.");
-        //console.log("|   ||   ||   ||   |,---| ||   |");
-        //console.log("`---'`---'`---'`---'`---^o``---'");
         console.log("deeply_api 1.0.0 alpha");
         console.log("Copyright (c) 2021 - deeply.to");
         console.log();
