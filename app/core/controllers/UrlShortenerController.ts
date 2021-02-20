@@ -1,15 +1,7 @@
-import Logger, { LogLevel } from "../../misc/Logger";
 import { Request, Response, NextFunction } from "express";
 import { getRandomToken } from "../../misc/Utils";
 import ShortUrlController from "../../database/controllers/ShortUrlController";
-
-const writeLine = Logger.generateLogger("UrlShortenerController");
-const writeLineWithRequest = (line: String, req: Request) => {
-    const address = req.connection.address() as any;
-    if (address?.address != null) {
-        writeLine(line + " from " + address.address, LogLevel.Debug);
-    }
-};
+import { writeLineWithRequest } from "./BasicController";
 
 export default class UrlShortenerController {
     static async create(req: Request, res: Response, next: NextFunction) {
