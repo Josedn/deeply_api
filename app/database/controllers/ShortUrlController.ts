@@ -13,9 +13,9 @@ export default class ShortUrlController {
         }
     }
 
-    static async retrieve(slug: string): Promise<IShortUrl[]> {
+    static async retrieve(slug: string): Promise<IShortUrl | null> {
         try {
-            const data = await ShortUrl.find({
+            const data = await ShortUrl.findOne({
                 slug,
             });
             return data;

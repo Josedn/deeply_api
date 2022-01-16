@@ -8,7 +8,7 @@ import UrlShortenerController from "./UrlShortenerController";
 export default class RouteManager {
     initialize(app: Express.Application): void {
         app.get("/", BasicController.getIndex);
-        app.post("/create", UrlShortenerController.create);
-        app.get("/retrieve", UrlShortenerController.retrieve);
+        app.post("/v1/url", UrlShortenerController.create);
+        app.get("/v1/url/:id", UrlShortenerController.retrieve);
     }
 }

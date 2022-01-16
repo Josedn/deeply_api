@@ -24,16 +24,16 @@ export default class ApiEnvironment {
         try {
             await this.core.initialize();
             writeLine("The environment has initialized successfully. Ready for connections.", LogLevel.Info);
-            //this.startCommandLoop();
+            // await this.startCommandLoop();
         } catch (err) {
-            writeLine("Error initializing server: " + err.message, LogLevel.Warning);
+            writeLine("Error initializing server: " + (err as Error).message, LogLevel.Warning);
             process.exit(0);
         }
     }
 
     private static printSplash() {
         console.log("deeply_api 1.0.0 alpha");
-        console.log("Copyright (c) 2021 - deeply.to");
+        console.log("Copyright (c) 2022 - deeply.to");
         console.log();
     }
 
